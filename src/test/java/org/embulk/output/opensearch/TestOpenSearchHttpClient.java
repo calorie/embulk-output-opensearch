@@ -20,7 +20,6 @@ import org.embulk.EmbulkTestRuntime;
 import org.embulk.config.ConfigException;
 import org.embulk.output.opensearch.OpenSearchOutputPluginDelegate.PluginTask;
 import org.embulk.util.config.ConfigMapper;
-import org.embulk.util.config.ConfigMapperFactory;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -73,7 +72,6 @@ public class TestOpenSearchHttpClient
     @Rule
     public EmbulkTestRuntime runtime = new EmbulkTestRuntime();
 
-    private static final ConfigMapperFactory CONFIG_MAPPER_FACTORY = OpenSearchOutputPlugin.CONFIG_MAPPER_FACTORY;
     private static final ConfigMapper CONFIG_MAPPER = OpenSearchOutputPlugin.CONFIG_MAPPER;
 
     private OpenSearchTestUtils utils;

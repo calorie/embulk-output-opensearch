@@ -17,7 +17,6 @@
 package org.embulk.output.opensearch;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.json.JsonObject;
 import jakarta.json.JsonValue;
 import jakarta.json.stream.JsonParser;
@@ -77,12 +76,6 @@ import java.util.stream.Collectors;
 public class OpenSearchHttpClient
 {
     private final Logger log;
-
-    // ALLOW_UNQUOTED_CONTROL_CHARS - Not expected but whether parser will allow JSON Strings to contain unquoted control characters
-    // FAIL_ON_UNKNOWN_PROPERTIES - Feature that determines whether encountering of unknown properties
-    private final ObjectMapper jsonMapper = new ObjectMapper()
-            .configure(com.fasterxml.jackson.core.JsonParser.Feature.ALLOW_UNQUOTED_CONTROL_CHARS, false)
-            .configure(com.fasterxml.jackson.databind.DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 
     // Elasticsearch maximum index byte size
     // @see https://github.com/opensearch-project/OpenSearch/blob/2.6.0/server/src/main/java/org/opensearch/cluster/metadata/MetadataCreateIndexService.java#L138
