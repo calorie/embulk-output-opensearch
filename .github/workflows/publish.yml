@@ -7,7 +7,7 @@ jobs:
   publish:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
       - name: Run opensearch container
         run: docker compose up -d opensearch
@@ -22,6 +22,6 @@ jobs:
         run: |
           mkdir ~/.gem
           echo "---" > ~/.gem/credentials
-          echo ":github: Bearer ${{ secrets.PACKAGE_TOKEN }}" >> ~/.gem/credentials
+          echo ":rubygems_api_key:  ${{ secrets.RUBYGEMS_AUTH_TOKEN }}" >> ~/.gem/credentials
           chmod 600 ~/.gem/credentials
-          find ./build/gems -name 'embulk-output-opensearch-*.gem' -maxdepth 1 -print0 | xargs -0 gem push --key github --host 'https://rubygems.pkg.github.com/calorie'
+          find ./build/gems -name 'embulk-output-opensearch-*.gem' -maxdepth 1 -print0 | xargs -0 gem push
