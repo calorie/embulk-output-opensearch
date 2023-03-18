@@ -16,7 +16,7 @@
 Install via Gemfile:
 
 ```ruby
-gem "embulk-output-opensearch", "1.0.1"
+gem 'embulk-output-opensearch'
 ```
 
 ## Configuration

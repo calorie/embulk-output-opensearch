@@ -28,8 +28,6 @@ import org.embulk.config.TaskReport;
 import org.embulk.output.opensearch.OpenSearchOutputPluginDelegate.PluginTask;
 import org.embulk.output.opensearch.jackson.JacksonServiceRecord;
 import org.embulk.output.opensearch.jackson.JacksonServiceValue;
-import org.opensearch.client.json.JsonpMapper;
-import org.opensearch.client.json.jackson.JacksonJsonpMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -44,7 +42,6 @@ public class OpenSearchRecordBuffer extends RecordBuffer
     private final long bulkSize;
     private final OpenSearchHttpClient client;
     private final ObjectMapper mapper;
-    private final JsonpMapper jsonpMapper;
     private final Logger log;
     private long totalCount;
     private int requestCount;
@@ -61,7 +58,6 @@ public class OpenSearchRecordBuffer extends RecordBuffer
         this.mapper = new ObjectMapper()
                 .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
                 .configure(com.fasterxml.jackson.core.JsonParser.Feature.ALLOW_UNQUOTED_CONTROL_CHARS, false);
-        this.jsonpMapper = new JacksonJsonpMapper(this.mapper);
         this.records = JsonNodeFactory.instance.arrayNode();
         this.totalCount = 0;
         this.requestCount = 0;
@@ -75,9 +71,9 @@ public class OpenSearchRecordBuffer extends RecordBuffer
         try {
             final JacksonServiceRecord jacksonServiceRecord = (JacksonServiceRecord) serviceRecord;
 
-            JacksonTopLevelValueLocator locator = new JacksonTopLevelValueLocator("record");
-            JacksonServiceValue serviceValue = jacksonServiceRecord.getValue(locator);
-            JsonNode record = serviceValue.getInternalJsonNode();
+            final JacksonTopLevelValueLocator locator = new JacksonTopLevelValueLocator("record");
+            final JacksonServiceValue serviceValue = jacksonServiceRecord.getValue(locator);
+            final JsonNode record = serviceValue.getInternalJsonNode();
 
             records.add(record);
 
