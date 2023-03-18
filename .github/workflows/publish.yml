@@ -22,6 +22,6 @@ jobs:
         run: |
           mkdir ~/.gem
           echo "---" > ~/.gem/credentials
-          echo ":rubygems_api_key:  ${{ secrets.RUBYGEMS_AUTH_TOKEN }}" >> ~/.gem/credentials
+          echo ":rubygems_api_key: ${{ secrets.RUBYGEMS_AUTH_TOKEN }}" >> ~/.gem/credentials
           chmod 600 ~/.gem/credentials
           find ./build/gems -name 'embulk-output-opensearch-*.gem' -maxdepth 1 -print0 | xargs -0 gem push
