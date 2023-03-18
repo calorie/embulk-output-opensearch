@@ -60,7 +60,6 @@ import org.opensearch.client.transport.OpenSearchTransport;
 import org.opensearch.client.transport.TransportOptions;
 import org.opensearch.client.transport.endpoints.BooleanResponse;
 import org.opensearch.client.transport.rest_client.RestClientTransport;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
