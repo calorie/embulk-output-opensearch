@@ -86,8 +86,7 @@ public class OpenSearchHttpClient
             .configure(com.fasterxml.jackson.databind.DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 
     // Elasticsearch maximum index byte size
-    // public static final int MAX_INDEX_NAME_BYTES = 255;
-    // @see https://github.com/elastic/elasticsearch/blob/master/core/src/main/java/org/elasticsearch/cluster/metadata/MetaDataCreateIndexService.java#L108
+    // @see https://github.com/opensearch-project/OpenSearch/blob/2.6.0/server/src/main/java/org/opensearch/cluster/metadata/MetadataCreateIndexService.java#L138
     private final long maxIndexNameBytes = 255;
     private final List<Character> invalidIndexCharacters = Arrays.asList('\\', '/', '*', '?', '"', '<', '>', '|', '#', ' ', ',');
 
@@ -102,20 +101,11 @@ public class OpenSearchHttpClient
             return;
         }
 
-        // curl -xPOST localhost:9200/{index}/{type}/_bulk -d '
-        // {"index" : {}}\n
-        // {"k" : "v"}\n
-        // {"index" : {}}\n
-        // {"k" : "v2"}\n
-        // '
         sendBulkRequest(records, task);
     }
 
     public boolean isIndexExisting(final String indexName, final PluginTask task)
     {
-        // curl -XGET localhost:9200/{index}
-        // No index: 404
-        // Index found: 200
         try {
             sendGetIndexRequest(indexName, task);
             return true;
@@ -155,7 +145,6 @@ public class OpenSearchHttpClient
 
     public String getEsVersion(final PluginTask task)
     {
-        // curl -XGET 'http://localhost:9200'
         return sendInfoRequest(task).version().number();
     }
 
@@ -187,9 +176,6 @@ public class OpenSearchHttpClient
 
     private List<String> getIndexByAlias(final String aliasName, final PluginTask task)
     {
-        // curl -XGET localhost:9200/_alias/{alias}
-        // No alias: 404
-        // Alias found: {"embulk_20161018-183738":{"aliases":{"embulk":{}}}}
         final GetAliasResponse getAliasResponse = sendGetAliasRequest(aliasName, task);
         final Map<String, IndexAliases> result = getAliasResponse.result();
         if (result == null || result.isEmpty()) {
@@ -217,20 +203,12 @@ public class OpenSearchHttpClient
         }
 
         if (!isAliasExisting(aliasName, task)) {
-            // curl -XPUT http://localhost:9200/{index}/_alias/{alias}
-            // Success: {"acknowledged":true}
             sendPutAliasRequest(indexName, aliasName, task);
             log.info("Assigned alias [{}] to Index [{}]", aliasName, indexName);
 
             return;
         }
 
-        // curl -XPUT http://localhost:9200/_alias -d\
-        // "actions" : [
-        //   {"remove" : {"alias" : "{alias}", "index" : "{index_old}"}},
-        //   {"add" : {"alias": "{alias}", "index": "{index_new}"}}
-        // ]
-        // Success: {"acknowledged":true}
         final List<String> oldIndices = getIndexByAlias(aliasName, task);
         sendUpdateAliasesRequest(oldIndices, indexName, aliasName, task);
 
@@ -245,8 +223,6 @@ public class OpenSearchHttpClient
 
         waitSnapshot(task);
 
-        // curl -XDELETE localhost:9200/{index}
-        // Success: {"acknowledged":true}
         sendDeleteIndexRequest(indexName, task);
 
         log.info("Deleted Index [{}]", indexName);
@@ -279,8 +255,6 @@ public class OpenSearchHttpClient
 
     private boolean isSnapshotProgressing(final PluginTask task)
     {
-        // https://www.elastic.co/guide/en/elasticsearch/reference/current/modules-snapshots.html#_snapshot_status
-        // curl -XGET localhost:9200/_snapshot/_status
         final SnapshotStatusResponse snapshotStatusResponse = sendSnapshotStatusRequest(task);
         final List<Status> snapshots = snapshotStatusResponse.snapshots();
 
