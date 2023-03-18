@@ -13,14 +13,10 @@
 
 ## Installation
 
-https://github.com/users/calorie/packages/rubygems/package/embulk-output-opensearch
-
 Install via Gemfile:
 
 ```ruby
-source "https://rubygems.pkg.github.com/calorie" do
-  gem "embulk-output-opensearch", "1.0.0"
-end
+gem "embulk-output-opensearch", "1.0.1"
 ```
 
 ## Configuration
