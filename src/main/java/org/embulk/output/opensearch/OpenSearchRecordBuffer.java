@@ -72,10 +72,8 @@ public class OpenSearchRecordBuffer extends RecordBuffer
     @Override
     public void bufferRecord(ServiceRecord serviceRecord)
     {
-        JacksonServiceRecord jacksonServiceRecord;
-
         try {
-            jacksonServiceRecord = (JacksonServiceRecord) serviceRecord;
+            final JacksonServiceRecord jacksonServiceRecord = (JacksonServiceRecord) serviceRecord;
 
             JacksonTopLevelValueLocator locator = new JacksonTopLevelValueLocator("record");
             JacksonServiceValue serviceValue = jacksonServiceRecord.getValue(locator);

@@ -132,7 +132,7 @@ public class OpenSearchHttpClient
 
     public boolean isAliasExisting(final String aliasName, final PluginTask task)
     {
-        BooleanResponse booleanResponse = sendExistsAliasRequest(aliasName, task);
+        final BooleanResponse booleanResponse = sendExistsAliasRequest(aliasName, task);
         return booleanResponse.value();
     }
 
@@ -145,9 +145,9 @@ public class OpenSearchHttpClient
             assignAlias(newIndexName, aliasName, task);
         }
         else {
-            List<String> oldIndices = getIndexByAlias(aliasName, task);
+            final List<String> oldIndices = getIndexByAlias(aliasName, task);
             assignAlias(newIndexName, aliasName, task);
-            for (String index : oldIndices) {
+            for (final String index : oldIndices) {
                 deleteIndex(index, task);
             }
         }
@@ -190,8 +190,8 @@ public class OpenSearchHttpClient
         // curl -XGET localhost:9200/_alias/{alias}
         // No alias: 404
         // Alias found: {"embulk_20161018-183738":{"aliases":{"embulk":{}}}}
-        GetAliasResponse getAliasResponse = sendGetAliasRequest(aliasName, task);
-        Map<String, IndexAliases> result = getAliasResponse.result();
+        final GetAliasResponse getAliasResponse = sendGetAliasRequest(aliasName, task);
+        final Map<String, IndexAliases> result = getAliasResponse.result();
         if (result == null || result.isEmpty()) {
             return new ArrayList<>();
         }
@@ -205,7 +205,7 @@ public class OpenSearchHttpClient
             return Optional.empty();
         }
 
-        String id = record.getString(idColumn.get(), null);
+        final String id = record.getString(idColumn.get(), null);
 
         return (id == null) ? Optional.empty() : Optional.of(id);
     }
@@ -231,7 +231,7 @@ public class OpenSearchHttpClient
         //   {"add" : {"alias": "{alias}", "index": "{index_new}"}}
         // ]
         // Success: {"acknowledged":true}
-        List<String> oldIndices = getIndexByAlias(aliasName, task);
+        final List<String> oldIndices = getIndexByAlias(aliasName, task);
         sendUpdateAliasesRequest(oldIndices, indexName, aliasName, task);
 
         log.info("Reassigned alias [{}] to index[{}]", aliasName, indexName);
@@ -254,12 +254,12 @@ public class OpenSearchHttpClient
 
     private void waitSnapshot(final PluginTask task)
     {
-        int maxSnapshotWaitingMills = task.getMaxSnapshotWaitingSecs() * 1000;
+        final int maxSnapshotWaitingMills = task.getMaxSnapshotWaitingSecs() * 1000;
         long execCount = 1;
         long totalWaitingTime = 0;
         // Since only needs exponential backoff, don't need exception handling and others, I don't use Embulk RetryExecutor
         while (isSnapshotProgressing(task)) {
-            long sleepTime = ((long) Math.pow(2, execCount) * 1000);
+            final long sleepTime = ((long) Math.pow(2, execCount) * 1000);
             try {
                 Thread.sleep(sleepTime);
             }
@@ -281,8 +281,8 @@ public class OpenSearchHttpClient
     {
         // https://www.elastic.co/guide/en/elasticsearch/reference/current/modules-snapshots.html#_snapshot_status
         // curl -XGET localhost:9200/_snapshot/_status
-        SnapshotStatusResponse snapshotStatusResponse = sendSnapshotStatusRequest(task);
-        List<Status> snapshots = snapshotStatusResponse.snapshots();
+        final SnapshotStatusResponse snapshotStatusResponse = sendSnapshotStatusRequest(task);
+        final List<Status> snapshots = snapshotStatusResponse.snapshots();
 
         return snapshots != null && !snapshots.isEmpty();
     }
@@ -292,12 +292,12 @@ public class OpenSearchHttpClient
         try (OpenSearchRetryHelper retryHelper = createRetryHelper(task)) {
             BulkRequest.Builder br = new BulkRequest.Builder();
 
-            JsonParser parser = new JacksonJsonpParser(records.traverse());
-            JsonData jsonData = JsonData.from(parser, retryHelper.jsonpMapper());
+            final JsonParser parser = new JacksonJsonpParser(records.traverse());
+            final JsonData jsonData = JsonData.from(parser, retryHelper.jsonpMapper());
 
-            for (JsonValue jsonValue : jsonData.toJson().asJsonArray()) {
-                JsonObject record = jsonValue.asJsonObject();
-                Optional<String> id = getRecordId(record, task.getId());
+            for (final JsonValue jsonValue : jsonData.toJson().asJsonArray()) {
+                final JsonObject record = jsonValue.asJsonObject();
+                final Optional<String> id = getRecordId(record, task.getId());
 
                 br.operations(op -> op
                     .index(idx -> idx
@@ -313,7 +313,7 @@ public class OpenSearchHttpClient
                         public BulkResponse requestOnce(org.opensearch.client.opensearch.OpenSearchClient client)
                         {
                             try {
-                                TransportOptions filterOptions = client._transport().options().with(b -> b
+                                final TransportOptions filterOptions = client._transport().options().with(b -> b
                                     .setParameter("filter_path", "-took,-items.index._*")
                                 );
                                 return client.withTransportOptions(filterOptions).bulk(br.build());
@@ -437,6 +437,7 @@ public class OpenSearchHttpClient
     {
         try (OpenSearchRetryHelper retryHelper = createRetryHelper(task)) {
             UpdateAliasesRequest.Builder br = new UpdateAliasesRequest.Builder();
+
             br.actions(ac -> ac.remove(ra -> ra.alias(aliasName).indices(oldIndices)));
             br.actions(ac -> ac.add(aa -> aa.alias(aliasName).index(indexName)));
 
@@ -536,7 +537,7 @@ public class OpenSearchHttpClient
                                 }
                             });
 
-                            OpenSearchTransport transport = new RestClientTransport(restClientBuilder.build(), new JacksonJsonpMapper());
+                            final OpenSearchTransport transport = new RestClientTransport(restClientBuilder.build(), new JacksonJsonpMapper());
                             return new OpenSearchClient(transport);
                         }
                         catch (Exception ex) {
@@ -549,7 +550,7 @@ public class OpenSearchHttpClient
     private List<HttpHost> getHttpHosts(final PluginTask task)
     {
         List<HttpHost> hosts = new ArrayList<>();
-        String protocol = task.getUseSsl() ? "https" : "http";
+        final String protocol = task.getUseSsl() ? "https" : "http";
         for (NodeAddressTask node : task.getNodes()) {
             hosts.add(new HttpHost(node.getHost(), node.getPort(), protocol));
         }
