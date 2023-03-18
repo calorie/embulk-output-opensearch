@@ -109,7 +109,7 @@ git checkout --detach main
 # (Edit: Remove "-SNAPSHOT" in "version" in build.gradle.)
 git add build.gradle
 git commit -m "Release vX.Y.Z"
-git tag -a vX.Y.Z
+git tag -a vX.Y.Z --cleanup=whitespace
 # (Edit: Write a tag annotation in the changelog format.)
 ```
 
