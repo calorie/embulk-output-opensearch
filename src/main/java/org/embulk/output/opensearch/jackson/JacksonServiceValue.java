@@ -16,7 +16,10 @@
 
 package org.embulk.output.opensearch.jackson;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.msgpack.MessagePackModule;
 import com.fasterxml.jackson.databind.node.NullNode;
 import org.embulk.base.restclient.record.ServiceValue;
 import org.embulk.util.json.JsonParser;
@@ -80,11 +83,12 @@ public class JacksonServiceValue extends ServiceValue
     @Override
     public Value jsonValue(final JsonParser jsonParser)
     {
-        // TODO(dmikurube): Use jackson-datatype-msgpack.
-        // See: https://github.com/embulk/embulk-base-restclient/issues/32
-        // Using |JsonNode#toString| instead of |JsonNode#asText| so that an empty JSON value can be parsed.
-        // |asText| converts an empty |JsonNode| to "" while |toString| converts to "{}".
-        return jsonParser.parse(value.toString());
+        try {
+            return OBJECT_MAPPER.treeToValue(value, Value.class);
+        }
+        catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
@@ -111,4 +115,6 @@ public class JacksonServiceValue extends ServiceValue
     }
 
     private final JsonNode value;
+
+    private static final ObjectMapper OBJECT_MAPPER = (new ObjectMapper()).registerModule(new MessagePackModule());
 }

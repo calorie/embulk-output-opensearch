@@ -17,7 +17,9 @@
 package org.embulk.output.opensearch.jackson;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.fasterxml.jackson.datatype.msgpack.MessagePackModule;
 import org.embulk.base.restclient.jackson.StringJsonParser;
 import org.embulk.base.restclient.record.SinglePageRecordReader;
 import org.embulk.spi.Column;
@@ -121,16 +123,16 @@ public class JacksonAllInObjectScope extends JacksonObjectScopeBase
                 @Override
                 public void jsonColumn(final Column column)
                 {
-                    // TODO(dmikurube): Use jackson-datatype-msgpack.
-                    // See: https://github.com/embulk/embulk-base-restclient/issues/32
                     if (!singlePageRecordReader.isNull(column)) {
                         Value value = singlePageRecordReader.getJson(column);
 
                         if (value.isMapValue()) {
-                            resultObject.set(column.getName(), jsonParser.parseJsonObject(value.toJson()));
+                            ObjectNode node = OBJECT_MAPPER.valueToTree(value);
+                            resultObject.set(column.getName(), node);
                         }
                         else if (value.isArrayValue()) {
-                            resultObject.set(column.getName(), jsonParser.parseJsonArray(value.toJson()));
+                            ArrayNode node = OBJECT_MAPPER.valueToTree(value);
+                            resultObject.set(column.getName(), node);
                         }
                         else {
                             throw new DataException("Unexpected node: " + value.toJson());
@@ -144,7 +146,7 @@ public class JacksonAllInObjectScope extends JacksonObjectScopeBase
         return resultObject;
     }
 
-    private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
+    private static final ObjectMapper OBJECT_MAPPER = (new ObjectMapper()).registerModule(new MessagePackModule());
 
     private final TimestampFormatter timestampFormatter;
     private final StringJsonParser jsonParser;
