@@ -6,6 +6,9 @@ on:
 jobs:
   publish:
     runs-on: ubuntu-latest
+    env:
+      PACKAGE_USERNAME: ${{ secrets.PACKAGE_USERNAME }}
+      PACKAGE_TOKEN: ${{ secrets.PACKAGE_TOKEN }}
     steps:
       - uses: actions/checkout@v3
 

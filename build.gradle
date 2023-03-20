@@ -12,6 +12,14 @@ repositories {
 
     // Tests need EmbulkTestRuntime. EmbulkTestRuntime needs old-style embulk-standards till 0.10.28. 0.10.28 needs jcenter.
     jcenter()
+
+    maven {
+        url = uri("https://maven.pkg.github.com/calorie/jackson-datatype-msgpack")
+        credentials {
+            username = project.findProperty("gpr.user") ?: System.getenv("PACKAGE_USERNAME")
+            password = project.findProperty("gpr.key") ?: System.getenv("PACKAGE_TOKEN")
+        }
+    }
 }
 
 group = "org.embulk"
@@ -64,6 +72,8 @@ dependencies {
     implementation 'org.opensearch.client:opensearch-java:2.2.0'
 
     implementation 'org.msgpack:msgpack-core:0.9.3'
+
+    implementation 'com.fasterxml.jackson.datatype:msgpack:0.1.0'
 
     testImplementation "junit:junit:4.13.2"
     testImplementation "org.hamcrest:hamcrest:2.2"

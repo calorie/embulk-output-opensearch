@@ -28,6 +28,9 @@ services:
     volumes:
       - .:/embulk
     working_dir: /embulk
+    environment:
+      - PACKAGE_USERNAME
+      - PACKAGE_TOKEN
 
 volumes:
   opensearch-data1:
