@@ -51,7 +51,6 @@ public class OpenSearchTestUtils
     public static String ES_ID;
     public static int ES_BULK_ACTIONS;
     public static int ES_BULK_SIZE;
-    public static int ES_CONCURRENT_REQUESTS;
     public static String PATH_PREFIX;
     public static String JSON_PATH_PREFIX;
     public static String ES_INDEX2;
@@ -73,7 +72,6 @@ public class OpenSearchTestUtils
         ES_ID = "id";
         ES_BULK_ACTIONS = 1000;
         ES_BULK_SIZE = 5242880;
-        ES_CONCURRENT_REQUESTS = 5;
         ES_AUTH_METHOD = "basic";
         ES_USER = "admin";
         ES_PASSWORD = "admin";
@@ -112,7 +110,6 @@ public class OpenSearchTestUtils
                 .set("id", ES_ID)
                 .set("bulk_actions", ES_BULK_ACTIONS)
                 .set("bulk_size", ES_BULK_SIZE)
-                .set("concurrent_requests", ES_CONCURRENT_REQUESTS)
                 .set("maximum_retries", 2)
                 .set("auth_method", ES_AUTH_METHOD)
                 .set("user", ES_USER)
@@ -138,7 +135,6 @@ public class OpenSearchTestUtils
                 .set("id", ES_ID)
                 .set("bulk_actions", ES_BULK_ACTIONS)
                 .set("bulk_size", ES_BULK_SIZE)
-                .set("concurrent_requests", ES_CONCURRENT_REQUESTS)
                 .set("maximum_retries", 2)
                 .set("fill_null_for_empty_column", true)
                 .set("auth_method", ES_AUTH_METHOD)
@@ -209,6 +205,8 @@ public class OpenSearchTestUtils
                 .add("flg", Types.BOOLEAN)
                 .add("score", Types.DOUBLE)
                 .add("comment", Types.STRING)
+                .add("product", Types.JSON)
+                .add("products", Types.JSON)
                 .build();
     }
 

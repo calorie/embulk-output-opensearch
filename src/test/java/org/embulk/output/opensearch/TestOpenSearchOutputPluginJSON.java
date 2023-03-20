@@ -36,6 +36,8 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
+import org.msgpack.value.ImmutableArrayValue;
+import org.msgpack.value.ImmutableMapValue;
 import org.opensearch.client.opensearch.OpenSearchClient;
 import org.opensearch.client.opensearch.core.SearchResponse;
 
@@ -47,6 +49,10 @@ import static org.embulk.output.opensearch.OpenSearchTestUtils.ES_INDEX;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertTrue;
+import static org.msgpack.value.ValueFactory.newArray;
+import static org.msgpack.value.ValueFactory.newInteger;
+import static org.msgpack.value.ValueFactory.newMap;
+import static org.msgpack.value.ValueFactory.newString;
 
 public class TestOpenSearchOutputPluginJSON
 {
@@ -147,7 +153,10 @@ public class TestOpenSearchOutputPluginJSON
         });
         TransactionalPageOutput output = plugin.open(task.toTaskSource(), schema, 0);
 
-        List<Page> pages = PageTestUtils.buildPage(runtime.getBufferAllocator(), schema, 1L, 32864L, "2015-01-27 19:23:49", "2015-01-27",  true, 123.45, "embulk");
+        ImmutableMapValue product = newMap(newString("id"), newInteger(1L), newString("name"), newString("product"));
+        ImmutableArrayValue products = newArray(product);
+
+        List<Page> pages = PageTestUtils.buildPage(runtime.getBufferAllocator(), schema, 1L, 32864L, "2015-01-27 19:23:49", "2015-01-27",  true, 123.45, "embulk", product, products);
         assertThat(pages.size(), is(1));
         for (Page page : pages) {
             output.add(page);
@@ -157,13 +166,13 @@ public class TestOpenSearchOutputPluginJSON
         output.commit();
         Thread.sleep(1500); // Need to wait until index done
 
-        SearchResponse<IndexData> response = openSearchClient.search(s -> s.index(ES_INDEX), IndexData.class);
+        SearchResponse<IndexDataJson> response = openSearchClient.search(s -> s.index(ES_INDEX), IndexDataJson.class);
 
         int totalHits = response.hits().hits().size();
 
         assertThat(totalHits, is(1));
 
-        IndexData record = response.hits().hits().get(0).source();
+        IndexDataJson record = response.hits().hits().get(0).source();
         assertThat(record.getId(), is(1L));
         assertThat(record.getAccount(), is(32864L));
         assertThat(record.getTime(), is("2015-01-27 19:23:49"));
@@ -171,6 +180,10 @@ public class TestOpenSearchOutputPluginJSON
         assertThat(record.getFlg(), is(true));
         assertThat(record.getScore(), is(123.45));
         assertThat(record.getComment(), is("embulk"));
+        assertThat(record.getProduct().getId(), is(1L));
+        assertThat(record.getProduct().getName(), is("product"));
+        assertThat(record.getProducts().get(0).getId(), is(1L));
+        assertThat(record.getProducts().get(0).getName(), is("product"));
     }
 
     @Test
@@ -188,7 +201,10 @@ public class TestOpenSearchOutputPluginJSON
         });
         TransactionalPageOutput output = plugin.open(task.toTaskSource(), schema, 0);
 
-        List<Page> pages = PageTestUtils.buildPage(runtime.getBufferAllocator(), schema, 2L, null, null, "2015-01-27",  true, 123.45, "embulk");
+        ImmutableMapValue product = newMap(newString("id"), newInteger(1L), newString("name"), newString("product"));
+        ImmutableArrayValue products = newArray(product);
+
+        List<Page> pages = PageTestUtils.buildPage(runtime.getBufferAllocator(), schema, 2L, null, null, "2015-01-27",  true, 123.45, "embulk", product, products);
         assertThat(pages.size(), is(1));
         for (Page page : pages) {
             output.add(page);
@@ -198,13 +214,13 @@ public class TestOpenSearchOutputPluginJSON
         output.commit();
         Thread.sleep(1500); // Need to wait until index done
 
-        SearchResponse<IndexData> response = openSearchClient.search(s -> s.index(ES_INDEX), IndexData.class);
+        SearchResponse<IndexDataJson> response = openSearchClient.search(s -> s.index(ES_INDEX), IndexDataJson.class);
 
         int totalHits = response.hits().hits().size();
 
         assertThat(totalHits, is(1));
 
-        IndexData record = response.hits().hits().get(0).source();
+        IndexDataJson record = response.hits().hits().get(0).source();
         assertThat(record.getId(), is(2L));
         assertTrue(record.getAccount() == null);
         assertTrue(record.getTime() == null);
@@ -212,6 +228,10 @@ public class TestOpenSearchOutputPluginJSON
         assertThat(record.getFlg(), is(true));
         assertThat(record.getScore(), is(123.45));
         assertThat(record.getComment(), is("embulk"));
+        assertThat(record.getProduct().getId(), is(1L));
+        assertThat(record.getProduct().getName(), is("product"));
+        assertThat(record.getProducts().get(0).getId(), is(1L));
+        assertThat(record.getProducts().get(0).getName(), is("product"));
     }
 
     @Test

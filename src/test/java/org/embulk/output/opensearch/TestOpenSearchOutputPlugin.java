@@ -47,7 +47,6 @@ import java.util.List;
 
 import static org.embulk.output.opensearch.OpenSearchTestUtils.ES_BULK_ACTIONS;
 import static org.embulk.output.opensearch.OpenSearchTestUtils.ES_BULK_SIZE;
-import static org.embulk.output.opensearch.OpenSearchTestUtils.ES_CONCURRENT_REQUESTS;
 import static org.embulk.output.opensearch.OpenSearchTestUtils.ES_ID;
 import static org.embulk.output.opensearch.OpenSearchTestUtils.ES_INDEX;
 import static org.embulk.output.opensearch.OpenSearchTestUtils.ES_NODES;
@@ -109,9 +108,7 @@ public class TestOpenSearchOutputPlugin
             .set("index", ES_INDEX)
             .set("id", ES_ID)
             .set("bulk_actions", ES_BULK_ACTIONS)
-            .set("bulk_size", ES_BULK_SIZE)
-            .set("concurrent_requests", ES_CONCURRENT_REQUESTS
-            );
+            .set("bulk_size", ES_BULK_SIZE);
         Schema schema = utils.oldParserConfig(runtime).loadConfig(CsvParserPlugin.PluginTask.class).getSchemaConfig().toSchema();
         try {
             plugin.transaction(config, schema, 0, new OutputPlugin.Control()
