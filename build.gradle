@@ -23,7 +23,7 @@ repositories {
 }
 
 group = "org.embulk"
-version = "1.1.0-SNAPSHOT"
+version = "1.1.1-SNAPSHOT"
 description = "OpenSearch output plugin is an Embulk plugin that loads records to OpenSearch read by any input plugins."
 
 sourceCompatibility = JavaVersion.VERSION_11
