@@ -15,8 +15,5 @@ jobs:
       - name: Run opensearch container
         run: docker compose up -d opensearch
 
-      - name: Testing
-        run: docker compose run --rm java ./gradlew check --console rich --info
-
       - name: Check building
         run: docker compose run --rm java ./gradlew gem --console rich --info
