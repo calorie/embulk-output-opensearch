@@ -20,7 +20,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.fasterxml.jackson.datatype.msgpack.MessagePackModule;
-import org.embulk.base.restclient.jackson.StringJsonParser;
 import org.embulk.base.restclient.record.SinglePageRecordReader;
 import org.embulk.spi.Column;
 import org.embulk.spi.ColumnVisitor;
@@ -48,7 +47,6 @@ public class JacksonAllInObjectScope extends JacksonObjectScopeBase
     public JacksonAllInObjectScope(final TimestampFormatter timestampFormatter, final boolean fillsJsonNullForEmbulkNull)
     {
         this.timestampFormatter = timestampFormatter;
-        this.jsonParser = new StringJsonParser();
         this.fillsJsonNullForEmbulkNull = fillsJsonNullForEmbulkNull;
     }
 
@@ -149,6 +147,5 @@ public class JacksonAllInObjectScope extends JacksonObjectScopeBase
     private static final ObjectMapper OBJECT_MAPPER = (new ObjectMapper()).registerModule(new MessagePackModule());
 
     private final TimestampFormatter timestampFormatter;
-    private final StringJsonParser jsonParser;
     private final boolean fillsJsonNullForEmbulkNull;
 }
