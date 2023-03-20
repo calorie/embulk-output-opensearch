@@ -9,3 +9,4 @@ es-data
 out
 
 .envrc
+/bench/data.json

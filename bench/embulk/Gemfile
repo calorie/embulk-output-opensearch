@@ -1,0 +1,6 @@
+source 'https://rubygems.org/'
+
+gem 'embulk', '0.10.44'
+gem 'embulk-filter-speedometer'
+gem 'embulk-output-elasticsearch'
+gem 'embulk-output-opensearch'

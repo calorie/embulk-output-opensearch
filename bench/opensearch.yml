@@ -1,0 +1,18 @@
+in:
+  type: file
+  path_prefix: /bench/data.json
+  parser:
+    type: json
+    charset: UTF-8
+    newline: CRLF
+    columns:
+    - { name: id, type: long }
+    - { name: name, type: string }
+    - { name: address, type: json }
+    - { name: posts, type: json }
+out:
+  type: opensearch
+  mode: replace
+  nodes:
+  - { host: opensearch, port: 9200 }
+  index: test

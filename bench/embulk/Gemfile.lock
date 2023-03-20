@@ -1,0 +1,21 @@
+GEM
+  remote: https://rubygems.org/
+  specs:
+    embulk (0.10.44-java)
+      msgpack (>= 1.1.0)
+    embulk-filter-speedometer (0.3.5)
+    embulk-output-elasticsearch (0.6.0-java)
+    embulk-output-opensearch (1.1.1-java)
+    msgpack (1.6.1-java)
+
+PLATFORMS
+  universal-java-11
+
+DEPENDENCIES
+  embulk (= 0.10.44)
+  embulk-filter-speedometer
+  embulk-output-elasticsearch
+  embulk-output-opensearch
+
+BUNDLED WITH
+   2.4.8
