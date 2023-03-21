@@ -1,7 +1,7 @@
 ## Benchmark
 
 ```sh
-docker compose build
+docker compose build --build-arg PACKAGE_USERNAME=$PACKAGE_USERNAME --build-arg PACKAGE_TOKEN=$PACKAGE_TOKEN embulk
 ruby jsonl.rb
 ```
 

@@ -41,6 +41,9 @@ services:
   embulk:
     build:
       context: ./embulk
+      args:
+        - PACKAGE_USER
+        - PACKAGE_TOKEN
     volumes:
       - .:/bench
     working_dir: /embulk
