@@ -3,7 +3,7 @@
 - Use [opensearch-java](https://github.com/opensearch-project/opensearch-java) client
 - Test in [OpenSearch Docker](https://hub.docker.com/r/opensearchproject/opensearch) container
 - [Support Embulk v0.11](https://www.embulk.org/articles/2021/04/27/changes-in-v0.11.html)
-- Faster than embulk-output-elasticsearch
+- [Faster than embulk-output-elasticsearch](https://github.com/calorie/embulk-output-opensearch#benchmark)
 
 ## Overview
 
