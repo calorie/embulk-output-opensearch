@@ -16,9 +16,7 @@
 
 package org.embulk.output.opensearch;
 
-import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import org.embulk.base.restclient.jackson.JacksonTopLevelValueLocator;
@@ -36,12 +34,10 @@ import org.slf4j.LoggerFactory;
  */
 public class OpenSearchRecordBuffer extends RecordBuffer
 {
-    private final String attributeName;
     private final PluginTask task;
     private final long bulkActions;
     private final long bulkSize;
     private final OpenSearchHttpClient client;
-    private final ObjectMapper mapper;
     private final Logger log;
     private long totalCount;
     private int requestCount;
@@ -50,14 +46,10 @@ public class OpenSearchRecordBuffer extends RecordBuffer
 
     public OpenSearchRecordBuffer(final String attributeName, final PluginTask task)
     {
-        this.attributeName = attributeName;
         this.task = task;
         this.bulkActions = task.getBulkActions();
         this.bulkSize = task.getBulkSize();
         this.client = new OpenSearchHttpClient();
-        this.mapper = new ObjectMapper()
-                .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
-                .configure(com.fasterxml.jackson.core.JsonParser.Feature.ALLOW_UNQUOTED_CONTROL_CHARS, false);
         this.records = JsonNodeFactory.instance.arrayNode();
         this.totalCount = 0;
         this.requestCount = 0;
