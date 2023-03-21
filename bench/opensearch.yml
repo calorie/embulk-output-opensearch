@@ -9,7 +9,13 @@ in:
     - { name: id, type: long }
     - { name: name, type: string }
     - { name: address, type: json }
-    - { name: posts, type: json }
+filters:
+  - type: speedometer
+    log_interval_seconds: 1
+    columns:
+    - { name: id, type: long }
+    - { name: name, type: string }
+    - { name: address, type: json }
 out:
   type: opensearch
   mode: replace
