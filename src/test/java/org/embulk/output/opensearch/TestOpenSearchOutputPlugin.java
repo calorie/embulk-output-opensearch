@@ -22,6 +22,7 @@ import org.embulk.config.ConfigException;
 import org.embulk.config.ConfigSource;
 import org.embulk.config.TaskReport;
 import org.embulk.config.TaskSource;
+import org.embulk.parser.csv.CsvParserPlugin;
 import org.embulk.output.opensearch.OpenSearchOutputPluginDelegate.AuthMethod;
 import org.embulk.output.opensearch.OpenSearchOutputPluginDelegate.Mode;
 import org.embulk.output.opensearch.OpenSearchOutputPluginDelegate.PluginTask;
@@ -30,7 +31,6 @@ import org.embulk.spi.Page;
 import org.embulk.spi.PageTestUtils;
 import org.embulk.spi.Schema;
 import org.embulk.spi.TransactionalPageOutput;
-import org.embulk.standards.CsvParserPlugin;
 import org.embulk.util.config.ConfigMapper;
 import org.embulk.util.config.ConfigMapperFactory;
 import org.junit.After;
@@ -109,7 +109,7 @@ public class TestOpenSearchOutputPlugin
             .set("id", ES_ID)
             .set("bulk_actions", ES_BULK_ACTIONS)
             .set("bulk_size", ES_BULK_SIZE);
-        Schema schema = utils.oldParserConfig(runtime).loadConfig(CsvParserPlugin.PluginTask.class).getSchemaConfig().toSchema();
+        Schema schema = CONFIG_MAPPER.map(utils.oldParserConfig(runtime), CsvParserPlugin.PluginTask.class).getSchemaConfig().toSchema();
         try {
             plugin.transaction(config, schema, 0, new OutputPlugin.Control()
             {
@@ -131,7 +131,7 @@ public class TestOpenSearchOutputPlugin
     public void testTransaction()
     {
         ConfigSource config = utils.config();
-        Schema schema = utils.oldParserConfig(runtime).loadConfig(CsvParserPlugin.PluginTask.class).getSchemaConfig().toSchema();
+        Schema schema = CONFIG_MAPPER.map(utils.oldParserConfig(runtime), CsvParserPlugin.PluginTask.class).getSchemaConfig().toSchema();
         plugin.transaction(config, schema, 0, new OutputPlugin.Control()
         {
             @Override
@@ -147,7 +147,7 @@ public class TestOpenSearchOutputPlugin
     public void testResume()
     {
         ConfigSource config = utils.config();
-        Schema schema = utils.oldParserConfig(runtime).loadConfig(CsvParserPlugin.PluginTask.class).getSchemaConfig().toSchema();
+        Schema schema = CONFIG_MAPPER.map(utils.oldParserConfig(runtime), CsvParserPlugin.PluginTask.class).getSchemaConfig().toSchema();
         final PluginTask task = CONFIG_MAPPER.map(config, PluginTask.class);
         plugin.resume(task.toTaskSource(), schema, 0, new OutputPlugin.Control()
         {
@@ -163,7 +163,7 @@ public class TestOpenSearchOutputPlugin
     public void testCleanup()
     {
         ConfigSource config = utils.config();
-        Schema schema = utils.oldParserConfig(runtime).loadConfig(CsvParserPlugin.PluginTask.class).getSchemaConfig().toSchema();
+        Schema schema = CONFIG_MAPPER.map(utils.oldParserConfig(runtime), CsvParserPlugin.PluginTask.class).getSchemaConfig().toSchema();
         final PluginTask task = CONFIG_MAPPER.map(config, PluginTask.class);
         plugin.cleanup(task.toTaskSource(), schema, 0, Arrays.asList(CONFIG_MAPPER_FACTORY.newTaskReport()));
         // no error happens
@@ -173,7 +173,7 @@ public class TestOpenSearchOutputPlugin
     public void testOutputByOpen() throws Exception
     {
         ConfigSource config = utils.config();
-        Schema schema = utils.oldParserConfig(runtime).loadConfig(CsvParserPlugin.PluginTask.class).getSchemaConfig().toSchema();
+        Schema schema = CONFIG_MAPPER.map(utils.oldParserConfig(runtime), CsvParserPlugin.PluginTask.class).getSchemaConfig().toSchema();
         final PluginTask task = CONFIG_MAPPER.map(config, PluginTask.class);
         plugin.transaction(config, schema, 0, new OutputPlugin.Control() {
             @Override
@@ -214,7 +214,7 @@ public class TestOpenSearchOutputPlugin
     public void testOpenAbort()
     {
         ConfigSource config = utils.config();
-        Schema schema = utils.oldParserConfig(runtime).loadConfig(CsvParserPlugin.PluginTask.class).getSchemaConfig().toSchema();
+        Schema schema = CONFIG_MAPPER.map(utils.oldParserConfig(runtime), CsvParserPlugin.PluginTask.class).getSchemaConfig().toSchema();
         final PluginTask task = CONFIG_MAPPER.map(config, PluginTask.class);
         TransactionalPageOutput output = plugin.open(task.toTaskSource(), schema, 0);
         output.abort();
