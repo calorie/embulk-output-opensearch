@@ -1,17 +1,14 @@
 plugins {
-    id "maven-publish"
     id "java"
+    id "maven-publish"
     id "signing"
-    id "jacoco"
     id "checkstyle"
+    id "jacoco"
     id "org.embulk.embulk-plugins" version "0.5.5"
 }
 
 repositories {
     mavenCentral()
-
-    // Tests need EmbulkTestRuntime. EmbulkTestRuntime needs old-style embulk-standards till 0.10.28. 0.10.28 needs jcenter.
-    jcenter()
 
     maven {
         url = uri("https://maven.pkg.github.com/calorie/jackson-datatype-msgpack")
@@ -61,18 +58,14 @@ dependencies {
     implementation "com.fasterxml.jackson.datatype:jackson-datatype-jdk8:2.6.7"
     implementation "javax.validation:validation-api:1.1.0.Final"
 
+    implementation 'com.fasterxml.jackson.datatype:jackson-datatype-msgpack:0.1.1'
+    implementation 'jakarta.xml.bind:jakarta.xml.bind-api:2.3.3'
     implementation "org.embulk:embulk-base-restclient:0.10.1"
     implementation "org.embulk:embulk-util-retryhelper-jetty92:0.8.2"
-
     implementation "org.embulk:embulk-util-timestamp:0.2.1"
-
-    implementation 'jakarta.xml.bind:jakarta.xml.bind-api:2.3.3'
-
+    implementation 'org.msgpack:msgpack-core:0.9.3'
     implementation 'org.opensearch.client:opensearch-rest-client:2.6.0'
     implementation 'org.opensearch.client:opensearch-java:2.3.0'
-
-    implementation 'org.msgpack:msgpack-core:0.9.3'
-    implementation 'com.fasterxml.jackson.datatype:jackson-datatype-msgpack:0.1.1'
 
     testImplementation "junit:junit:4.13.2"
     testImplementation "org.hamcrest:hamcrest:2.2"
@@ -228,7 +221,7 @@ gemPush {
 
 checkstyle {
     configFile = file("${project.rootDir}/config/checkstyle/checkstyle.xml")
-    toolVersion = '6.14.1'
+    toolVersion = '9.3'
 }
 checkstyleMain {
     configFile = file("${project.rootDir}/config/checkstyle/default.xml")
