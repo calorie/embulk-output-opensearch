@@ -24,7 +24,6 @@ gem 'embulk-output-opensearch'
 
 - **mode**: "insert" or "replace". See below(string, optional, default is insert)
 - **nodes**: list of nodes. nodes are pairs of host and port (list, required)
-  - NOTE: This plugin uses HTTP/REST Clients and uses TCP:9200 as a default. TCP:9300 is usually used for Transport Client.
 - **use_ssl** Use SSL encryption (boolean, default is false)
 - **auth_method** (string, default is 'none') 'none'/'basic'. See also [Authentication](#authentication).
 - **user** Username for basic authentication (string, default is null)
@@ -84,8 +83,9 @@ out:
   type: opensearch
   mode: insert
   nodes:
-  - {host: localhost, port: 9200}
+  - {host: vpc-domain-name-identifier.region.es.amazonaws.com, port: 443}
   index: <index name>
+  use_ssl: true
 ```
 
 ## Benchmark
