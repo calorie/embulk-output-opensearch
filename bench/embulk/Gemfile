@@ -1,9 +1,9 @@
 source 'https://rubygems.org/'
 
-gem 'embulk', '0.10.44'
+gem 'embulk'
 gem 'embulk-output-elasticsearch'
 gem 'embulk-output-opensearch'
 
 source 'https://rubygems.pkg.github.com/calorie' do
-  gem 'embulk-filter-speedometer', '0.4.3'
+  gem 'embulk-filter-speedometer'
 end

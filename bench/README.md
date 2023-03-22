@@ -9,12 +9,12 @@ ruby jsonl.rb
 
 ```sh
 docker compose up opensearch
-docker compose run --rm embulk java -cp "/jar/*" org.embulk.cli.Main run -b /embulk /bench/opensearch.yml
+docker compose run --rm embulk run -b /embulk /bench/opensearch.yml
 ```
 
 ## Elasticsearch
 
 ```sh
 docker compose up elasticsearch
-docker compose run --rm embulk java -cp "/jar/*" org.embulk.cli.Main run -b /embulk /bench/elasticsearch.yml
+docker compose run --rm embulk run -b /embulk /bench/elasticsearch.yml
 ```

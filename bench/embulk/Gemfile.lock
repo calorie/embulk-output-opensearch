@@ -4,7 +4,7 @@ GEM
     embulk (0.10.44-java)
       msgpack (>= 1.1.0)
     embulk-output-elasticsearch (0.6.0-java)
-    embulk-output-opensearch (1.1.1-java)
+    embulk-output-opensearch (1.1.3-java)
     msgpack (1.6.1-java)
 
 GEM
