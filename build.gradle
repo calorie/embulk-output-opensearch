@@ -61,7 +61,7 @@ dependencies {
     implementation 'com.fasterxml.jackson.datatype:jackson-datatype-msgpack:0.1.1'
     implementation 'jakarta.xml.bind:jakarta.xml.bind-api:2.3.3'
     implementation "org.embulk:embulk-base-restclient:0.10.1"
-    implementation "org.embulk:embulk-util-retryhelper-jetty92:0.8.2"
+    implementation "org.embulk:embulk-util-retryhelper:0.8.2"
     implementation "org.embulk:embulk-util-timestamp:0.2.1"
     implementation 'org.msgpack:msgpack-core:0.9.3'
     implementation 'org.opensearch.client:opensearch-rest-client:2.6.0'
