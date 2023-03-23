@@ -2,10 +2,10 @@ version: '3.9'
 services:
   opensearch:
     image: opensearchproject/opensearch:2.6.0
-    container_name: opensearch-node1
+    container_name: opensearch-node-bench
     environment:
       - cluster.name=opensearch-cluster
-      - node.name=opensearch-node1
+      - node.name=opensearch-node-bench
       - discovery.type=single-node
       - bootstrap.memory_lock=true
       - "OPENSEARCH_JAVA_OPTS=-Xms512m -Xmx512m"
@@ -21,10 +21,10 @@ services:
       - "9200:9200"
   elasticsearch:
     image: docker.elastic.co/elasticsearch/elasticsearch:8.6.2
-    container_name: elasticsearch-node1
+    container_name: elasticsearch-node-bench
     environment:
       - cluster.name=elasticsearch-cluster
-      - node.name=elasticsearch-node1
+      - node.name=elasticsearch-node-bench
       - discovery.type=single-node
       - bootstrap.memory_lock=true
       - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
