@@ -19,13 +19,13 @@ package org.embulk.output.opensearch;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.JsonNodeFactory;
-import org.embulk.base.restclient.jackson.JacksonTopLevelValueLocator;
 import org.embulk.base.restclient.record.RecordBuffer;
 import org.embulk.base.restclient.record.ServiceRecord;
 import org.embulk.config.TaskReport;
 import org.embulk.output.opensearch.OpenSearchOutputPluginDelegate.PluginTask;
 import org.embulk.output.opensearch.jackson.JacksonServiceRecord;
 import org.embulk.output.opensearch.jackson.JacksonServiceValue;
+import org.embulk.output.opensearch.jackson.JacksonTopLevelValueLocator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
