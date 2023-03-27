@@ -17,7 +17,6 @@
 package org.embulk.output.opensearch.jackson;
 
 import org.embulk.base.restclient.ServiceRequestMapper;
-import org.embulk.base.restclient.jackson.JacksonValueLocator;
 import org.embulk.base.restclient.record.EmbulkValueScope;
 import org.embulk.base.restclient.record.RecordExporter;
 import org.embulk.base.restclient.record.ValueExporter;
