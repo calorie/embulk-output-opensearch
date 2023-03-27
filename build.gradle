@@ -72,7 +72,7 @@ dependencies {
     testImplementation "org.embulk:embulk-core:0.10.37"
     testImplementation "org.embulk:embulk-junit4:0.10.37"
     testImplementation "org.embulk:embulk-deps:0.10.37"
-    testImplementation "org.embulk:embulk-parser-csv:0.10.37"
+    testImplementation "org.embulk:embulk-parser-csv:0.10.40"
 }
 
 embulkPlugin {
