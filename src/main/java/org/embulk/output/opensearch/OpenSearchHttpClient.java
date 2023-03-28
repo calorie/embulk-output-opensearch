@@ -61,9 +61,7 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -71,11 +69,6 @@ import java.util.stream.Collectors;
 public class OpenSearchHttpClient
 {
     private final Logger log;
-
-    // Elasticsearch maximum index byte size
-    // @see https://github.com/opensearch-project/OpenSearch/blob/2.6.0/server/src/main/java/org/opensearch/cluster/metadata/MetadataCreateIndexService.java#L138
-    private final long maxIndexNameBytes = 255;
-    private final List<Character> invalidIndexCharacters = Arrays.asList('\\', '/', '*', '?', '"', '<', '>', '|', '#', ' ', ',');
 
     public OpenSearchHttpClient()
     {
@@ -133,32 +126,6 @@ public class OpenSearchHttpClient
     public String getEsVersion(final PluginTask task)
     {
         return sendInfoRequest(task).version().number();
-    }
-
-    // TODO: Delete this
-    public void validateIndexOrAliasName(final String index)
-    {
-        for (int i = 0; i < index.length(); i++) {
-            if (invalidIndexCharacters.contains(index.charAt(i))) {
-                throw new ConfigException(String.format("'%s' must not contain the invalid characters " + invalidIndexCharacters.toString(), index));
-            }
-        }
-
-        if (!index.toLowerCase(Locale.ROOT).equals(index)) {
-            throw new ConfigException(String.format("'%s' must be lowercase", index));
-        }
-
-        if (index.startsWith("_") || index.startsWith("-") || index.startsWith("+")) {
-            throw new ConfigException(String.format("'%s' must not start with '_', '-', or '+'", index));
-        }
-
-        if (index.length() > maxIndexNameBytes) {
-            throw new ConfigException(String.format("index name is too long, (%s > %s)", index.length(), maxIndexNameBytes));
-        }
-
-        if (index.equals(".") || index.equals("..")) {
-            throw new ConfigException("index must not be '.' or '..'");
-        }
     }
 
     private List<String> getIndexByAlias(final String aliasName, final PluginTask task)

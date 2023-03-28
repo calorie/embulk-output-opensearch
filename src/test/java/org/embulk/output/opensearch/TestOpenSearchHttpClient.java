@@ -17,7 +17,6 @@
 package org.embulk.output.opensearch;
 
 import org.embulk.EmbulkTestRuntime;
-import org.embulk.config.ConfigException;
 import org.embulk.output.opensearch.OpenSearchOutputPluginDelegate.PluginTask;
 import org.embulk.util.config.ConfigMapper;
 import org.junit.After;
@@ -76,52 +75,6 @@ public class TestOpenSearchHttpClient
 
     private OpenSearchTestUtils utils;
     private OpenSearchClient openSearchClient;
-
-    @Test
-    public void testValidateIndexOrAliasName()
-    {
-        OpenSearchHttpClient client = new OpenSearchHttpClient();
-        client.validateIndexOrAliasName("embulk");
-    }
-
-    @Test(expected = ConfigException.class)
-    public void testIndexNameContainsUpperCase()
-    {
-        OpenSearchHttpClient client = new OpenSearchHttpClient();
-        client.validateIndexOrAliasName("Embulk");
-    }
-
-    @Test(expected = ConfigException.class)
-    public void testIndexNameStartsInvalidChars()
-    {
-        OpenSearchHttpClient client = new OpenSearchHttpClient();
-        client.validateIndexOrAliasName("_embulk");
-    }
-
-    @Test(expected = ConfigException.class)
-    public void testIndexNameContainsInvalidChars()
-    {
-        OpenSearchHttpClient client = new OpenSearchHttpClient();
-        client.validateIndexOrAliasName("em#bulk");
-    }
-
-    @Test(expected = ConfigException.class)
-    public void testIndexNameTooLong()
-    {
-        String index = "embulk";
-        for (int i = 0; i < 255; i++) {
-            index += "s";
-        }
-        OpenSearchHttpClient client = new OpenSearchHttpClient();
-        client.validateIndexOrAliasName(index);
-    }
-
-    @Test(expected = ConfigException.class)
-    public void testIndexNameEqDot()
-    {
-        OpenSearchHttpClient client = new OpenSearchHttpClient();
-        client.validateIndexOrAliasName(".");
-    }
 
     @Test
     public void testGenerateNewIndex()
