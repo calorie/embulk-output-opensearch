@@ -17,9 +17,6 @@
 package org.embulk.output.opensearch;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import jakarta.json.JsonObject;
-import jakarta.json.JsonValue;
-import jakarta.json.stream.JsonParser;
 import org.apache.http.HttpHost;
 import org.apache.http.auth.AuthScope;
 import org.apache.http.auth.UsernamePasswordCredentials;
@@ -34,9 +31,7 @@ import org.embulk.output.opensearch.OpenSearchOutputPluginDelegate.PluginTask;
 import org.embulk.spi.Exec;
 import org.opensearch.client.RestClient;
 import org.opensearch.client.RestClientBuilder;
-import org.opensearch.client.json.JsonData;
 import org.opensearch.client.json.jackson.JacksonJsonpMapper;
-import org.opensearch.client.json.jackson.JacksonJsonpParser;
 import org.opensearch.client.opensearch.OpenSearchClient;
 import org.opensearch.client.opensearch.core.BulkRequest;
 import org.opensearch.client.opensearch.core.BulkResponse;
@@ -177,15 +172,13 @@ public class OpenSearchHttpClient
         return result.keySet().stream().collect(Collectors.toList());
     }
 
-    private Optional<String> getRecordId(final JsonObject record, final Optional<String> idColumn)
+    private Optional<String> getRecordId(final JsonNode record, final Optional<String> idColumn)
     {
-        if (!idColumn.isPresent()) {
-            return Optional.empty();
+        if (idColumn.isPresent() && !record.hasNonNull(idColumn.get())) {
+            return Optional.of(record.get(idColumn.get()).toString());
         }
 
-        final String id = record.getString(idColumn.get(), null);
-
-        return (id == null) ? Optional.empty() : Optional.of(id);
+        return Optional.empty();
     }
 
     private void assignAlias(final String indexName, final String aliasName, final PluginTask task)
@@ -258,11 +251,7 @@ public class OpenSearchHttpClient
         try (OpenSearchRetryHelper retryHelper = createRetryHelper(task)) {
             BulkRequest.Builder br = new BulkRequest.Builder();
 
-            final JsonParser parser = new JacksonJsonpParser(records.traverse());
-            final JsonData jsonData = JsonData.from(parser, retryHelper.jsonpMapper());
-
-            for (final JsonValue jsonValue : jsonData.toJson().asJsonArray()) {
-                final JsonObject record = jsonValue.asJsonObject();
+            for (final JsonNode record : records) {
                 final Optional<String> id = getRecordId(record, task.getId());
 
                 br.operations(op -> op
