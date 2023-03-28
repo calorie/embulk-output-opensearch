@@ -14,8 +14,9 @@ FROM eclipse-temurin:11 AS embulk
 ARG PACKAGE_USERNAME
 ARG PACKAGE_TOKEN
 
-ENV PACKAGE_USERNAME=${PACKAGE_USERNAME}
-ENV PACKAGE_TOKEN=${PACKAGE_TOKEN}
+RUN apt-get update && \
+    apt-get install --no-install-recommends -y netbase && \
+    rm -rf /var/lib/apt/lists/*
 
 COPY --from=jar /jar /jar
 
@@ -27,13 +28,8 @@ COPY embulk.properties /embulk/.embulk/embulk.properties
 COPY Gemfile /embulk/Gemfile
 COPY Gemfile.lock /embulk/Gemfile.lock
 
-RUN java -jar /jar/embulk.jar gem install msgpack bundler liquid && \
+RUN java -jar /jar/embulk.jar gem install bundler -v '2.4.10' && \
   java -jar /jar/embulk.jar bundle config --local rubygems.pkg.github.com $PACKAGE_USERNAME:$PACKAGE_TOKEN && \
   java -jar /jar/embulk.jar bundle install --path .
-
-FROM gcr.io/distroless/java11-debian11:latest
-
-COPY --from=jar /jar /jar
-COPY --from=embulk /embulk /embulk
 
 ENTRYPOINT ["java", "-cp", "/jar/*", "org.embulk.cli.Main"]

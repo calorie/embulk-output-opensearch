@@ -92,8 +92,8 @@ out:
 
 |plugin|total|sec|speed|records|records/s|
 |:---|:---|:---|:---|:---|:---|
-|embulk-output-opensearch|210mb|33.8|6.2mb/s|5,000,000|147,946/s|
-|embulk-output-elasticsearch|210mb|43.1|4.9mb/s|5,000,000|116,122/s|
+|embulk-output-opensearch|210mb|42.3|5.0mb/s|5,000,000|118,301/s|
+|embulk-output-elasticsearch|210mb|53.0|4.0mb/s|5,000,000|94,279/s|
 
 ## Test
 

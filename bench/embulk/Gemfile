@@ -3,6 +3,8 @@ source 'https://rubygems.org/'
 gem 'embulk'
 gem 'embulk-output-elasticsearch'
 gem 'embulk-output-opensearch'
+gem 'liquid'
+gem 'msgpack'
 
 source 'https://rubygems.pkg.github.com/calorie' do
   gem 'embulk-filter-speedometer'
