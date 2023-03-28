@@ -205,7 +205,6 @@ public class OpenSearchOutputPluginDelegate
 
         log.info(String.format("Connecting to OpenSearch version:%s", client.getEsVersion(task)));
         log.info("Executing plugin with '{}' mode.", task.getMode());
-        client.validateIndexOrAliasName(task.getIndex());
 
         if (task.getMode().equals(Mode.REPLACE)) {
             task.setAlias(Optional.of(task.getIndex()));
