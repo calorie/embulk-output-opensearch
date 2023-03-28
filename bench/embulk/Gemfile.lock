@@ -4,7 +4,8 @@ GEM
     embulk (0.10.44-java)
       msgpack (>= 1.1.0)
     embulk-output-elasticsearch (0.6.0-java)
-    embulk-output-opensearch (1.1.4-java)
+    embulk-output-opensearch (1.1.5-java)
+    liquid (5.4.0)
     msgpack (1.6.1-java)
 
 GEM
@@ -16,10 +17,12 @@ PLATFORMS
   universal-java-11
 
 DEPENDENCIES
-  embulk (= 0.10.44)
-  embulk-filter-speedometer (= 0.4.3)!
+  embulk
+  embulk-filter-speedometer!
   embulk-output-elasticsearch
   embulk-output-opensearch
+  liquid
+  msgpack
 
 BUNDLED WITH
-   2.4.9
+   2.4.10
