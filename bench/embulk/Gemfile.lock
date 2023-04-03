@@ -4,9 +4,9 @@ GEM
     embulk (0.10.44-java)
       msgpack (>= 1.1.0)
     embulk-output-elasticsearch (0.6.0-java)
-    embulk-output-opensearch (1.1.5-java)
+    embulk-output-opensearch (1.1.6-java)
     liquid (5.4.0)
-    msgpack (1.6.1-java)
+    msgpack (1.7.0-java)
 
 GEM
   remote: https://rubygems.pkg.github.com/calorie/
