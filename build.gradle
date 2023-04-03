@@ -37,12 +37,12 @@ java {
 }
 
 dependencies {
-    compileOnly "org.embulk:embulk-api:0.10.37"
-    compileOnly "org.embulk:embulk-spi:0.10.37"
+    compileOnly "org.embulk:embulk-api:0.10.41"
+    compileOnly "org.embulk:embulk-spi:0.10.41"
 
-    implementation("org.embulk:embulk-util-config:0.3.2") {
+    implementation("org.embulk:embulk-util-config:0.3.3") {
         // They conflict with embulk-core. They are once excluded here,
-        // and added explicitly with versions exactly the same with embulk-core:0.10.37.
+        // and added explicitly with versions exactly the same with embulk-core:0.10.41.
         exclude group: "com.fasterxml.jackson.core", module: "jackson-annotations"
         exclude group: "com.fasterxml.jackson.core", module: "jackson-core"
         exclude group: "com.fasterxml.jackson.core", module: "jackson-databind"
@@ -51,10 +51,10 @@ dependencies {
     }
 
     // They are once excluded from transitive dependencies of other dependencies,
-    // and added explicitly with versions exactly the same with embulk-core:0.10.37.
+    // and added explicitly with versions exactly the same with embulk-core:0.10.41.
     implementation "com.fasterxml.jackson.core:jackson-annotations:2.6.7"
     implementation "com.fasterxml.jackson.core:jackson-core:2.6.7"
-    implementation "com.fasterxml.jackson.core:jackson-databind:2.6.7"
+    implementation "com.fasterxml.jackson.core:jackson-databind:2.6.7.5" // backport security fixes.
     implementation "com.fasterxml.jackson.datatype:jackson-datatype-jdk8:2.6.7"
     implementation "javax.validation:validation-api:1.1.0.Final"
 
@@ -69,10 +69,11 @@ dependencies {
 
     testImplementation "junit:junit:4.13.2"
     testImplementation "org.hamcrest:hamcrest:2.2"
-    testImplementation "org.embulk:embulk-core:0.10.37"
-    testImplementation "org.embulk:embulk-junit4:0.10.37"
-    testImplementation "org.embulk:embulk-deps:0.10.37"
-    testImplementation "org.embulk:embulk-parser-csv:0.10.37"
+    testImplementation "com.google.guava:guava:31.1-jre"
+    testImplementation "org.embulk:embulk-core:0.10.41"
+    testImplementation "org.embulk:embulk-junit4:0.10.41"
+    testImplementation "org.embulk:embulk-deps:0.10.41"
+    testImplementation "org.embulk:embulk-parser-csv:0.10.41"
 }
 
 embulkPlugin {
