@@ -72,7 +72,7 @@ dependencies {
     testImplementation "com.google.guava:guava:31.1-jre"
     testImplementation "org.embulk:embulk-core:0.10.41"
     testImplementation "org.embulk:embulk-junit4:0.10.41"
-    testImplementation "org.embulk:embulk-deps:0.10.41"
+    testImplementation "org.embulk:embulk-deps:0.10.49"
     testImplementation "org.embulk:embulk-parser-csv:0.10.41"
 }
 
