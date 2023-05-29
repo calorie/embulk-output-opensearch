@@ -69,7 +69,7 @@ dependencies {
 
     testImplementation "junit:junit:4.13.2"
     testImplementation "org.hamcrest:hamcrest:2.2"
-    testImplementation "com.google.guava:guava:31.1-jre"
+    testImplementation "com.google.guava:guava:32.0.0-jre"
     testImplementation "org.embulk:embulk-core:0.10.41"
     testImplementation "org.embulk:embulk-junit4:0.10.41"
     testImplementation "org.embulk:embulk-deps:0.10.41"
