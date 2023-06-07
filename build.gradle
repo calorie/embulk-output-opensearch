@@ -64,7 +64,7 @@ dependencies {
     implementation "org.embulk:embulk-util-retryhelper:0.8.2"
     implementation "org.embulk:embulk-util-timestamp:0.2.1"
     implementation 'org.msgpack:msgpack-core:0.9.3'
-    implementation 'org.opensearch.client:opensearch-rest-client:2.6.0'
+    implementation 'org.opensearch.client:opensearch-rest-client:2.8.0'
     implementation 'org.opensearch.client:opensearch-java:2.3.0'
 
     testImplementation "junit:junit:4.13.2"
