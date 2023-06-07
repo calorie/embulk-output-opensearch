@@ -40,7 +40,7 @@ dependencies {
     compileOnly "org.embulk:embulk-api:0.10.41"
     compileOnly "org.embulk:embulk-spi:0.10.41"
 
-    implementation("org.embulk:embulk-util-config:0.3.3") {
+    implementation("org.embulk:embulk-util-config:0.3.4") {
         // They conflict with embulk-core. They are once excluded here,
         // and added explicitly with versions exactly the same with embulk-core:0.10.41.
         exclude group: "com.fasterxml.jackson.core", module: "jackson-annotations"
